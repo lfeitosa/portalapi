@@ -1,29 +1,33 @@
 openapi: 3.0.0
 info:
-  title: API Becommerce - Produtos
-  description: Api oficial da Becommerce para gestão de produtos
+  title: API Becommerce - Anuncio
+  description: Api oficial da Becommerce para gestão de anuncio
   version: "1.0.0"
   
 servers:
+
+# Added by API Auto Mocking Plugin
+ 
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/becommerce/api-becommerce_produtos/1.0.0
+    url: https://virtserver.swaggerhub.com/lfeitosa/ADS/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/becommerce/api-becommerce_anuncios/1.0.0
   - url: http://api.becommerce.com.br/v1
     description: URL da api de produção
   - url: http://staging-api.becommerce.com.br/v1
     description: Servidor usado para testes da API
 
-  
 tags: 
-- name: Produtos
-  description: (products) É a entidade que representa um produto do seller
+- name: Anuncio
+  description: (ads) É a entidade que representa um anuncio do seller
 
 paths:
-  /products:
+  /items:
     get:
       tags: 
-      - Produtos
-      summary: Obtem uma lista de produtos do sistema
+      - Anuncios
+      summary: Obtem uma lista de anuncios do sistema
       security:
         - bearerAuth: []
       parameters: 
@@ -36,10 +40,10 @@ paths:
             example: "TT620483"
         - name: status
           in: query
-          description: Refere-se se o produto pedido esta ativo ou inativo
+          description: Refere-se se o anuncio solicitado esta ativo/pausado/finalizado
           schema:
             type: string
-            example: "active | inactive | all"
+            example: "active | paused | finally"
         - name: tags
           in: query
           description: descrição da tag
@@ -54,7 +58,7 @@ paths:
             example: "pneu | honda | celular"
       responses:
         '200':
-          description: "Retorna uma lista de produtos cadastrados"
+          description: "Retorna uma lista de anuncios cadastrados"
           content:
             application/json:
               schema:
@@ -69,273 +73,132 @@ paths:
           $ref: '#/components/responses/UnprocessableRequest'
         '500':
           $ref: '#/components/responses/ServiceError'
-    post:
-      tags: 
-      - Produtos
-      summary: Envia um objeto de um produto para ser gravado na base de dados
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: Envia um objeto que representa um produto
-        required: true
-        content:
-          'application/json':
-            schema:
-              $ref: "#/components/schemas/Product"
-      responses:
-        '201':
-          description: Retorno confirmando que o objeto foi criado com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Product"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
-      
-  /products/{productID}:
-    get:
-      tags: 
-      - Produtos
-      summary: Pega o registro de um produto de acordo com o productID passado
-      security:
-        - bearerAuth: []
-      parameters: 
-        - name: productID
-          description: É o identificador unico do produto (MELIID)
-          in: path
-          required: true
-          schema:
-            type: string
-            example: "MLB1138005551"
-      responses:
-        '200':
-          description: "Retorna o produto solicitado"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
-    put:
-      tags: 
-      - Produtos
-      summary: Realiza uma alteração em uma entidade ja existente
-      security:
-        - bearerAuth: []
-      parameters: 
-        - name: productID
-          in: path
-          required: true
-          schema:
-            type: string
-            example: "MLB1138005551"
-      requestBody:
-        description: Envia um objeto que representa um produto com as alterações necessárias
-        required: true
-        content:
-          'application/json':
-            schema:
-              $ref: "#/components/schemas/Products"
-      responses:
-        '200':
-          description: Retorno confirmando que o objeto foi alterado com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Products"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
-    delete:
-      tags: 
-      - Produtos
-      summary: Remove um produto do sistema
-      security:
-        - bearerAuth: []
-      parameters: 
-      - name: productID
-        description: Identificação unica do produto
-        in: path
-        required: true
-        schema:
-          type: string
-          example: "MLB1138005551"
-      responses:
-        '204':
-          description: Produto removido com sucesso
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
- 
+
           
 components:
   schemas:
     Products:
       type: object
       description: >
-        Modelo destinado ao retorno de produtos.
+        Modelo destinado ao retorno de anuncios.
       properties:
-        products:
-           $ref: "#/components/schemas/Product"
-        
-    Product:
+        ads:
+           $ref: "#/components/schemas/Ads"
+    Ads:
       type: object
       properties:
-        id: 
-          type: integer
-          format: int64
-        sku:
+        item_id: 
           type: string
+          format: string
+          example: "MLB123131231"
         title:
           type: string
-        tags:
+          example: "Wok Antiaderente Ultra Strong Indução 30cm Tampa Vidro"
+        detailedDescription:
           type: string
-        sellPrice:
+          format: string
+          example: "Wok Antiaderente Ultra Strong por indução 30cm 4,7 Litros..."
+        category_id:
           type: string
-        costPrice:
+          format: string
+          example: "MLB1341"
+        EAN:
           type: string
-        checkoutRequest:
+          format: string
+          example: "9900000023928"
+        brand:
           type: string
-        sendTypeProduct:
-          type: string
-        expeditionDetails:
-          type: string
-        hasVariation:
-          type: boolean
-        fiscalGroup:
-          type: string
-        comercialUnit:
-          type: string
-        cfop:
-          $ref: "#/components/schemas/CFOP"
-        ncm:
-          $ref: "#/components/schemas/NCM"
-        productOrigin:
-          type: string
-          enum:
-          - "0 - Nacional - Exceto as indicadas nos códigos 3 a 5"
-          - "1 - Estrangeira - Importação direta, exceto a indicada no cógio 6"
-          example: "0 - Nacional - Exceto as indicadas nos códigos 3 a 5"
-        ads:
+          format: string
+          example: ROCHELI
+        available_quantity:
+          type: integer
+          example: 10
+        sold_quantity:
+          type: integer
+          example: 3
+        pictures:
           type: array
-          items: 
-            type: string
-            example: ["MLB2313123", "MLB23123123"]
+          items:
+            $ref: "#/components/schemas/Pictures"
+        prices:
+          $ref: "#/components/schemas/Prices"
+        youtubeLink:
+          type: string
+          example: "null"
+        type:
+          $ref: "#/components/schemas/Types"
         variations:
           type: array
           items:
             $ref: "#/components/schemas/ProductVariation"
-        inventoryRule:
-          type: string
-          example: Padrão
-        photos:
+        
+        dimension:
+          $ref: "#/components/schemas/FreightInfo"
+        shipping:  
+          $ref: "#/components/schemas/Shipping"
+        tags:
           type: array
           items:
-            $ref: "#/components/schemas/Photo"
-        freightInfo:
-          $ref: "#/components/schemas/FreightInfo"
-        stocks:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Stocks"
-        inventories:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Inventories"  
-          
+            type: string
+            example: "[mandatory_free_shipping]"
     ProductVariation:
       type: object
       properties:
         id_sku:
           type: integer
-        grid:
-          type: "array"
+          example: 134
+        EAN:
+          type: string
+          example: "9900000023928"
+        condition: 
+          type: string
+          example: "new"
+        price:
+          type: string
+          example: 1412.32
+        stock:
+          type: integer
+          example: 3
+        custom_variation:
+          type: array
           items:
-            $ref: "#/components/schemas/DataVariation"
-        
-    DataVariation:
-      type: object
-      properties:
-        nameVariation:
-          type: string
-          format: string
-          example: "Cor"
-        valueVariation:
-          type: string
-          format: string
-          example: "preto"
-        situationVariation: 
-          type: string
-          format: string
-          example: "active"
-    Photo:
+            $ref: "#/components/schemas/CustomVariation"
+    
+    Pictures:
       description: >
-        É a foto do produto, ela pode ser colocada como principal ou não
+        Refere-se as imagens disponibilizadas para o anuncio.
       type: object
       properties:
-        id:
+        id_picture:
           type: integer
         url:
           type: string
-        isMainPhoto:
-          type: boolean
-          default: false
-    CFOP:
+          example:  "http://mlb-s1-p.mlstatic.com/903494-MLB29071741031_122018-O.jpg"
+       
+    Prices:
       description: >
-        Código Fiscal de Operações e Prestações, das entradas e saídas de mercadorias, intermunicipal e interestadual. Trata-se de um código numérico que identifica a natureza de circulação da mercadoria ou a prestação de serviço de transportes.
+        Refere-se aos precos do produto destinado ao anúncio.
+      type: object
+      properties:
+        id_price:
+          type: integer
+        priceValue:
+          type: string
+          format: string
+          example: 123.23
+    Types:
+      description: >
+        Refere-se aos tipos de anúncio.
       type: object
       properties:
         id:
-          type: integer
-        code:
           type: string
-          example: 5350
-        description:
+          example: "gold_special"
+                        
+        name:
           type: string
-          example: PRESTAÇÕES DE SERVIÇOS DE TRANSPORTE
-    NCM:
-      description: >
-        NCM significa "Nomenclatura Comum do Mercosul" e trata-se de um código de oito dígitos estabelecido pelo Governo Brasileiro para identificar a natureza das mercadorias e promover o desenvolvimento do comércio internacional, além de facilitar a coleta e análise das estatísticas do comércio exterior.
-      type: object
-      properties:
-        id:
-          type: integer
-        code:
-          type: string
-          example: 123052990
-        description:
-          type: string
-          example: Outros serviços de assistência social
+          format: string
+          example: "Clássico"    
     FreightInfo:
       description: >
         São as informações de frete do produto, contém toda a informação necessária para um calculo de frete
@@ -354,91 +217,72 @@ components:
           example: cm 16.0
         weight:
           type: string
-          example: peso da carga
-        timeHandling:
-          type: string
-          example: 2 
-          description: Número em dias que será adicionado ao prazo calculado do frete.
-        ownDelivery:
-          type: boolean
-          description: Define se este item possui a opção de entrega propria.
-          default: false
-        removal:
-          type: boolean
-        freightMode:
-          type: string
-          enum:
-            - "Correios"
-            - "Tabela Personalizada"
-            - "Mercado Envios"
-        freightTableID:
-          type: integer
-          description: Tabela personalizada por grupo de estados, para gerenciar as tabelas da conta, acesse 'Tabelas de Frete > Gerenciamento
-        additionalUnity:
-          type: string
-          description:
-            Define a regra de calculo de frete para mais de uma unidade deste mesmo produto.
-        freeNormal:
-          type: boolean
-        freeExpress:
-          type: boolean
-        expressAdditionalValue:
-          type: number
-        expressAdditionalPercent:
-          type: string
-        normalAdditionalValue:
-          type: number
-        normalAdditionalPercent:
-          type: string
-    Stocks: 
+   
+    CustomVariation:
       description: >
-        Metodo destinado para mostrar os itens que estao dentro do inventario.
+        Refere-se as variacoes de um unico produto, por exemplo (cor, tamanho, etc)
       type: object
-      required:
-        - id_sku
-        - quantity
       properties:
-        id_sku:
+        id:
           type: string
           format: string
-          example: 'SKU-12374'
-        quantity:
-          type: integer
-          example: 12
-    Inventories:
-      type: object
-      description: >
-        Metodo destinado para consulta de inventarios da Bec.
-      required:
-        - id
-        - blockMovement
-        - SituationInvetorie  
-      properties:
-        Id:
+          example: "COLOR"
+        name:
           type: string
-          format: uuid
-          example: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-        externalLocator:  
+          example: "Cor"
+        valueId:
+          type: string
+          example: "52049"
+        valueName:
           type: string
           format: string
-          example: 'INV-12374'
-        blockMovement:
+          example: "Preto"
+    Shipping:
+      description: >
+        Refere-se ao envio da mercadoria e quais modelos estão habilitados.
+      type: object
+      properties:
+        mode:
+          type: string
+          format: string
+          example: "me2"
+        localPickup:
           type: boolean
-          format: boolean
           example: true
-        SituationInvetorie:
+        freeshipping:
+          type: boolean
+          example: true
+        logisticType:
           type: string
-          format: String
-          enum:
-          - 'Aberto'
-          - 'Processado'
-          - 'Cancelado'
-          example: 'Aberto'
-        Note:
+          format: string
+          example: "Cross_docking"      
+        ShippingFreeRules:
+          type: array
+          items:
+            $ref: "#/components/schemas/ShippingFreeRules"
+    ShippingFreeRules:
+      description: >
+        Refere-se as regras para envio gratuito da mercadoria.
+      type: object
+      properties:
+        id:
           type: string
-          format: String
-          example: 'Inventario para organizacao da operacao' 
-
+          format: string
+          example: "73328"
+        rule:
+          type: object
+          properties:
+          
+            freemode:
+              type: string
+              format: string
+              example: "country"
+            value:
+              type: string
+              format: string
+              example: "null"
+      
+     
           
   securitySchemes:
     bearerAuth:
