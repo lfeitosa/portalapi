@@ -250,7 +250,7 @@ components:
           type: array
           items: 
             type: string
-            example: ["123123", "123123123"]
+            example: ["MLB2313123", "MLB23123123"]
         variations:
           type: array
           items:
@@ -278,6 +278,26 @@ components:
       properties:
         id:
           type: integer
+        grid:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/DataVariation"
+        
+    DataVariation:
+      type: array
+      properties:
+        nameVariation:
+          type: string
+          format: string
+          example: Cor
+        valueVariation:
+          type: string
+          format: string
+          example: preto
+        situationVariation: 
+          type: string
+          format: string
+          example: active
     Photo:
       description: >
         É a foto do produto, ela pode ser colocada como principal ou não
@@ -375,8 +395,13 @@ components:
         Metodo destinado para mostrar os itens que estao dentro do inventario.
       type: object
       required:
+        - id_sku
         - Quantidade
       properties:
+        id_sku:
+          type: string
+          format: string
+          example: 'SKU-12374'
         Quantidade:
           type: integer
           example: 12
