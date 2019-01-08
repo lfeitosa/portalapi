@@ -276,7 +276,7 @@ components:
     ProductVariation:
       type: object
       properties:
-        id:
+        id_sku:
           type: integer
         grid:
           type: "array"
@@ -284,20 +284,20 @@ components:
             $ref: "#/components/schemas/DataVariation"
         
     DataVariation:
-      type: array
+      type: object
       properties:
         nameVariation:
           type: string
           format: string
-          example: Cor
+          example: "Cor"
         valueVariation:
           type: string
           format: string
-          example: preto
+          example: "preto"
         situationVariation: 
           type: string
           format: string
-          example: active
+          example: "active"
     Photo:
       description: >
         É a foto do produto, ela pode ser colocada como principal ou não
@@ -396,13 +396,13 @@ components:
       type: object
       required:
         - id_sku
-        - Quantidade
+        - quantity
       properties:
         id_sku:
           type: string
           format: string
           example: 'SKU-12374'
-        Quantidade:
+        quantity:
           type: integer
           example: 12
     Inventories:
@@ -410,23 +410,23 @@ components:
       description: >
         Metodo destinado para consulta de inventarios da Bec.
       required:
-        - Id
-        - BloqueiaMovimentacao
-        - SituacaoInvetario  
+        - id
+        - blockMovement
+        - SituationInvetorie  
       properties:
         Id:
           type: string
           format: uuid
           example: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-        localizadorExterno:  
+        externalLocator:  
           type: string
           format: string
           example: 'INV-12374'
-        BloqueiaMovimentacao:
+        blockMovement:
           type: boolean
           format: boolean
           example: true
-        SituacaoInvetario:
+        SituationInvetorie:
           type: string
           format: String
           enum:
@@ -434,7 +434,7 @@ components:
           - 'Processado'
           - 'Cancelado'
           example: 'Aberto'
-        Observacao:
+        Note:
           type: string
           format: String
           example: 'Inventario para organizacao da operacao' 
