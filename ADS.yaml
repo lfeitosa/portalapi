@@ -107,7 +107,7 @@ components:
           format: string
           example: "9900000023928"
         brand:
-          type: string
+          type: string 
           format: string
           example: ROCHELI
         available_quantity:
