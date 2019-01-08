@@ -5,15 +5,14 @@ info:
   version: "1.0.0"
   
 servers:
+
 # Added by API Auto Mocking Plugin
-# Added by API Auto Mocking Plugin
+ 
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/lfeitosa/ADS/1.0.0
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/lfeitosa/ANUNCIO/1.0.0
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/becommerce/api-becommerce_produtos/1.0.0
+    url: https://virtserver.swaggerhub.com/becommerce/api-becommerce_anuncios/1.0.0
   - url: http://api.becommerce.com.br/v1
     description: URL da api de produção
   - url: http://staging-api.becommerce.com.br/v1
