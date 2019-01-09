@@ -204,9 +204,7 @@ components:
       type: object
       description: >
         Modelo destinado ao retorno de produtos.
-      properties:
-        products:
-           $ref: "#/components/schemas/Product"
+      $ref: "#/components/schemas/Product"
         
     Product:
       type: object
@@ -286,6 +284,10 @@ components:
     DataVariation:
       type: object
       properties:
+        id_variation: 
+          type: string
+          format: string
+          example: "MLA21313"
         nameVariation:
           type: string
           format: string
