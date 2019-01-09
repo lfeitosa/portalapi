@@ -151,7 +151,7 @@ paths:
         content:
           'application/json':
             schema:
-              $ref: "#/components/schemas/Products"
+              $ref: "#/components/schemas/Product"
       responses:
         '200':
           description: Retorno confirmando que o objeto foi alterado com sucesso
@@ -250,7 +250,7 @@ components:
           type: array
           items: 
             type: string
-            example: ["123123", "123123123"]
+            example: ["MLB2313123", "MLB23123123"]
         variations:
           type: array
           items:
@@ -276,8 +276,32 @@ components:
     ProductVariation:
       type: object
       properties:
-        id:
+        id_sku:
           type: integer
+        grid:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/DataVariation"
+        
+    DataVariation:
+      type: object
+      properties:
+        nameVariation:
+          type: string
+          format: string
+          example: "Cor"
+        valueVariation:
+          type: string
+          format: string
+          example: "preto"
+        situationVariation: 
+          type: string
+          format: string
+          example: "active"
+        stock: 
+          type: integer
+          format: integer
+          example: 12  
     Photo:
       description: >
         É a foto do produto, ela pode ser colocada como principal ou não
@@ -375,9 +399,14 @@ components:
         Metodo destinado para mostrar os itens que estao dentro do inventario.
       type: object
       required:
-        - Quantidade
+        - id_sku
+        - quantity
       properties:
-        Quantidade:
+        id_sku:
+          type: string
+          format: string
+          example: 'SKU-12374'
+        quantity:
           type: integer
           example: 12
     Inventories:
@@ -385,23 +414,23 @@ components:
       description: >
         Metodo destinado para consulta de inventarios da Bec.
       required:
-        - Id
-        - BloqueiaMovimentacao
-        - SituacaoInvetario  
+        - id
+        - blockMovement
+        - situationInvetorie  
       properties:
-        Id:
+        id:
           type: string
           format: uuid
           example: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-        localizadorExterno:  
+        externalLocator:  
           type: string
           format: string
           example: 'INV-12374'
-        BloqueiaMovimentacao:
+        blockMovement:
           type: boolean
           format: boolean
           example: true
-        SituacaoInvetario:
+        situationInvetorie:
           type: string
           format: String
           enum:
@@ -409,7 +438,7 @@ components:
           - 'Processado'
           - 'Cancelado'
           example: 'Aberto'
-        Observacao:
+        note:
           type: string
           format: String
           example: 'Inventario para organizacao da operacao' 
