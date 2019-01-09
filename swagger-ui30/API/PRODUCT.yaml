@@ -264,10 +264,6 @@ components:
             $ref: "#/components/schemas/Photo"
         freightInfo:
           $ref: "#/components/schemas/FreightInfo"
-        stocks:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Stocks"
         inventories:
           type: "array"
           items:
@@ -276,6 +272,10 @@ components:
     ProductVariation:
       type: object
       properties:
+        cod_sku:
+          type: string
+          format: string
+          example: "PROD-1234"
         id_sku:
           type: integer
         grid:
@@ -298,6 +298,10 @@ components:
           type: string
           format: string
           example: "active"
+        stock: 
+          type: integer
+          format: integer
+          example: 12
         
     Photo:
       description: >
@@ -391,21 +395,7 @@ components:
           type: number
         normalAdditionalPercent:
           type: string
-    Stocks: 
-      description: >
-        Metodo destinado para mostrar os itens que estao dentro do inventario.
-      type: object
-      required:
-        - id_sku
-        - quantity
-      properties:
-        id_sku:
-          type: string
-          format: string
-          example: 'SKU-12374'
-        quantity:
-          type: integer
-          example: 12
+    
     Inventories:
       type: object
       description: >
