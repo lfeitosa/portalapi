@@ -19,8 +19,8 @@ servers:
     description: Servidor usado para testes da API
 
 tags: 
-- name: Anuncio
-  description: (ads) É a entidade que representa um anuncio do seller
+- name: Anuncios
+  description: (ads) É a entidade que representa um ou mais anuncios do seller
 
 paths:
   /items:
@@ -107,7 +107,7 @@ components:
           format: string
           example: "9900000023928"
         brand:
-          type: string 
+          type: string
           format: string
           example: ROCHELI
         available_quantity:
