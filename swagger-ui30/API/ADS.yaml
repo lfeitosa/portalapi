@@ -1,0 +1,359 @@
+openapi: 3.0.0
+info:
+  title: API Becommerce - Anuncio
+  description: Api oficial da Becommerce para gestão de anuncio
+  version: "1.0.0"
+  
+servers:
+
+# Added by API Auto Mocking Plugin
+ 
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/lfeitosa/ADS/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/becommerce/api-becommerce_anuncios/1.0.0
+  - url: http://api.becommerce.com.br/v1
+    description: URL da api de produção
+  - url: http://staging-api.becommerce.com.br/v1
+    description: Servidor usado para testes da API
+
+tags: 
+- name: Anuncio
+  description: (ads) É a entidade que representa um anuncio do seller
+
+paths:
+  /items:
+    get:
+      tags: 
+      - Anuncios
+      summary: Obtem uma lista de anuncios do sistema
+      security:
+        - bearerAuth: []
+      parameters: 
+        - name: accountID
+          description: Refere-se a conta usada na Becommerce, a identificação da Loja
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "TT620483"
+        - name: status
+          in: query
+          description: Refere-se se o anuncio solicitado esta ativo/pausado/finalizado
+          schema:
+            type: string
+            example: "active | paused | finally"
+        - name: tags
+          in: query
+          description: descrição da tag
+          schema:
+            type: string
+            example: "Associação Automatica | Automático"
+        - name: search
+          in: query
+          description: Pode ser enviado o Título, ID ou Código do SKU para buscar na lista
+          schema:
+            type: string
+            example: "pneu | honda | celular"
+      responses:
+        '200':
+          description: "Retorna uma lista de anuncios cadastrados"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/UnathorizedRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableRequest'
+        '500':
+          $ref: '#/components/responses/ServiceError'
+
+          
+components:
+  schemas:
+    Products:
+      type: object
+      description: >
+        Modelo destinado ao retorno de anuncios.
+      properties:
+        ads:
+           $ref: "#/components/schemas/Ads"
+    Ads:
+      type: object
+      properties:
+        item_id: 
+          type: string
+          format: string
+          example: "MLB123131231"
+        title:
+          type: string
+          example: "Wok Antiaderente Ultra Strong Indução 30cm Tampa Vidro"
+        detailedDescription:
+          type: string
+          format: string
+          example: "Wok Antiaderente Ultra Strong por indução 30cm 4,7 Litros..."
+        category_id:
+          type: string
+          format: string
+          example: "MLB1341"
+        EAN:
+          type: string
+          format: string
+          example: "9900000023928"
+        brand:
+          type: string 
+          format: string
+          example: ROCHELI
+        available_quantity:
+          type: integer
+          example: 10
+        sold_quantity:
+          type: integer
+          example: 3
+        pictures:
+          type: array
+          items:
+            $ref: "#/components/schemas/Pictures"
+        prices:
+          $ref: "#/components/schemas/Prices"
+        youtubeLink:
+          type: string
+          example: "null"
+        type:
+          $ref: "#/components/schemas/Types"
+        variations:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductVariation"
+        
+        dimension:
+          $ref: "#/components/schemas/FreightInfo"
+        shipping:  
+          $ref: "#/components/schemas/Shipping"
+        tags:
+          type: array
+          items:
+            type: string
+            example: "[mandatory_free_shipping]"
+    ProductVariation:
+      type: object
+      properties:
+        id_sku:
+          type: integer
+          example: 134
+        EAN:
+          type: string
+          example: "9900000023928"
+        condition: 
+          type: string
+          example: "new"
+        price:
+          type: string
+          example: 1412.32
+        stock:
+          type: integer
+          example: 3
+        custom_variation:
+          type: array
+          items:
+            $ref: "#/components/schemas/CustomVariation"
+    
+    Pictures:
+      description: >
+        Refere-se as imagens disponibilizadas para o anuncio.
+      type: object
+      properties:
+        id_picture:
+          type: integer
+        url:
+          type: string
+          example:  "http://mlb-s1-p.mlstatic.com/903494-MLB29071741031_122018-O.jpg"
+       
+    Prices:
+      description: >
+        Refere-se aos precos do produto destinado ao anúncio.
+      type: object
+      properties:
+        id_price:
+          type: integer
+        priceValue:
+          type: string
+          format: string
+          example: 123.23
+    Types:
+      description: >
+        Refere-se aos tipos de anúncio.
+      type: object
+      properties:
+        id:
+          type: string
+          example: "gold_special"
+                        
+        name:
+          type: string
+          format: string
+          example: "Clássico"    
+    FreightInfo:
+      description: >
+        São as informações de frete do produto, contém toda a informação necessária para um calculo de frete
+      type: object
+      properties:
+        id:
+          type: integer
+        height:
+          type: string
+          example: cm 2.0
+        width:
+          type: string
+          example: cm 2.0
+        depth:
+          type: string
+          example: cm 16.0
+        weight:
+          type: string
+   
+    CustomVariation:
+      description: >
+        Refere-se as variacoes de um unico produto, por exemplo (cor, tamanho, etc)
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          example: "COLOR"
+        name:
+          type: string
+          example: "Cor"
+        valueId:
+          type: string
+          example: "52049"
+        valueName:
+          type: string
+          format: string
+          example: "Preto"
+    Shipping:
+      description: >
+        Refere-se ao envio da mercadoria e quais modelos estão habilitados.
+      type: object
+      properties:
+        mode:
+          type: string
+          format: string
+          example: "me2"
+        localPickup:
+          type: boolean
+          example: true
+        freeshipping:
+          type: boolean
+          example: true
+        logisticType:
+          type: string
+          format: string
+          example: "Cross_docking"      
+        ShippingFreeRules:
+          type: array
+          items:
+            $ref: "#/components/schemas/ShippingFreeRules"
+    ShippingFreeRules:
+      description: >
+        Refere-se as regras para envio gratuito da mercadoria.
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          example: "73328"
+        rule:
+          type: object
+          properties:
+          
+            freemode:
+              type: string
+              format: string
+              example: "country"
+            value:
+              type: string
+              format: string
+              example: "null"
+      
+     
+          
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    BadRequest:
+      description: >-
+        The request contains headers, query params or body attributes empty that
+        are required.
+      content:
+        text/plain:
+          schema:
+            type: string
+    UnathorizedRequest:
+      description: The access token is missing or invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    NotFound:
+      description: Resource not found.
+      content:
+        text/plain:
+          schema:
+            type: string
+    BadContentTypeRequest:
+      description: The request contains invalid Content Type.
+      content:
+        text/plain:
+          schema:
+            type: string
+    AppUpdate:
+      description: The mobile application must be updated.
+      content:
+        text/plain:
+          schema:
+            type: string
+    UnprocessableRequest:
+      description: >-
+        The request contains headers, query params or body attributes with
+        invalid values.
+      content:
+        text/plain:
+          schema:
+            type: string
+    ServiceError:
+      description: >-
+        An error ocurred in the service. Please include the trace identifier in
+        your report.
+      content:
+        text/plain:
+          schema:
+            type: string
+    NotImplemented:
+      description: Unsupported functionality.
+      content:
+        text/plain:
+          schema:
+            type: string
+    BadGateway:
+      description: >-
+        An error ocurred in one of the upstreams services, the body contains the
+        description.
+      content:
+        text/plain:
+          schema:
+            type: string
+      headers:
+        X-Upstream-Code:
+          description: Error code from the upstream services.
+          schema:
+            type: string
