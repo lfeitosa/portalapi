@@ -10,9 +10,9 @@ servers:
  
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/lfeitosa/ADS/1.0.0
-  - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/becommerce/api-becommerce_anuncios/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/lfeitosa/ADS/1.0.0
   - url: http://api.becommerce.com.br/v1
     description: URL da api de produção
   - url: http://staging-api.becommerce.com.br/v1
@@ -62,7 +62,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Products'
+                $ref: '#/components/schemas/Ads'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -77,17 +77,19 @@ paths:
           
 components:
   schemas:
-    Products:
+    Ads:
       type: object
       description: >
         Modelo destinado ao retorno de anuncios.
-      properties:
-        ads:
-           $ref: "#/components/schemas/Ads"
-    Ads:
+      $ref: "#/components/schemas/Ad"
+    Ad:
       type: object
       properties:
-        item_id: 
+        id_item: 
+          type: int
+          format: int
+          example: 1231
+        cod_item: 
           type: string
           format: string
           example: "MLB123131231"
@@ -144,6 +146,9 @@ components:
     ProductVariation:
       type: object
       properties:
+        cod_sku:
+          type: string
+          example: "PROD-1242"
         id_sku:
           type: integer
           example: 134
@@ -183,8 +188,8 @@ components:
         id_price:
           type: integer
         priceValue:
-          type: string
-          format: string
+          type: number
+          format: number
           example: 123.23
     Types:
       description: >
@@ -207,16 +212,16 @@ components:
         id:
           type: integer
         height:
-          type: string
-          example: cm 2.0
+          type: number
+          example: 2.0
         width:
-          type: string
-          example: cm 2.0
+          type: number
+          example: 2.0
         depth:
-          type: string
-          example: cm 16.0
+          type: number
+          example: 16.0
         weight:
-          type: string
+          type: number
    
     CustomVariation:
       description: >
