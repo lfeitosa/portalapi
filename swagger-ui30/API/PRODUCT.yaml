@@ -196,6 +196,7 @@ paths:
           $ref: '#/components/responses/UnprocessableRequest'
         '500':
           $ref: '#/components/responses/ServiceError'
+          
  
           
 components:
