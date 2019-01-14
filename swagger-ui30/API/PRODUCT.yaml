@@ -213,28 +213,40 @@ components:
         id: 
           type: integer
           format: int64
+          example: 21
         sku:
           type: string
+          example: "PROD-1234"
         title:
           type: string
+          example: "Iphone 6s Plus"
         tags:
           type: string
+          example: "free_shipping"
         sellPrice:
-          type: string
+          type: number
+          example: 42.32
         costPrice:
-          type: string
+          type: number
+          example: 20.00
         checkoutRequest:
           type: string
+          example: "Qual frete?"
         sendTypeProduct:
           type: string
+          example: "Digital"
         expeditionDetails:
           type: string
+          example: null
         hasVariation:
           type: boolean
+          example: "Sim"
         fiscalGroup:
           type: string
+          example: "01"
         comercialUnit:
           type: string
+          example: "UN"
         cfop:
           $ref: "#/components/schemas/CFOP"
         ncm:
@@ -277,6 +289,7 @@ components:
           example: "PROD-1234"
         id_sku:
           type: integer
+          example: 32
         grid:
           type: "array"
           items:
@@ -313,8 +326,10 @@ components:
       properties:
         id:
           type: integer
+          example: 32
         url:
           type: string
+          example: "www.google.com.br/img.png"
         isMainPhoto:
           type: boolean
           default: false
@@ -351,15 +366,16 @@ components:
       properties:
         id:
           type: integer
+          example: 32
         height:
-          type: string
-          example: cm 2.0
+          type: number
+          example: 2.0
         width:
-          type: string
-          example: cm 2.0
+          type: number
+          example: 2.0
         depth:
-          type: string
-          example: cm 16.0
+          type: number
+          example: 16.0
         weight:
           type: string
           example: peso da carga
@@ -381,9 +397,11 @@ components:
             - "Mercado Envios"
         freightTableID:
           type: integer
+          example: 14
           description: Tabela personalizada por grupo de estados, para gerenciar as tabelas da conta, acesse 'Tabelas de Frete > Gerenciamento
         additionalUnity:
-          type: string
+          type: number
+          example: 0
           description:
             Define a regra de calculo de frete para mais de uma unidade deste mesmo produto.
         freeNormal:
@@ -393,11 +411,13 @@ components:
         expressAdditionalValue:
           type: number
         expressAdditionalPercent:
-          type: string
+          type: number
+          example: 23
         normalAdditionalValue:
           type: number
         normalAdditionalPercent:
-          type: string
+          type: number
+          example: 34.32
     
     Inventories:
       type: object
