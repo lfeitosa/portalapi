@@ -77,18 +77,14 @@ paths:
           
 components:
   schemas:
-    Ads:
-      type: object
-      description: >
-        Modelo destinado ao retorno de anuncios.
-      $ref: "#/components/schemas/Ad"
+  
     Ad:
       type: object
       properties:
         id_item: 
-          type: int
-          format: int
-          example: 1231
+          type: string
+          format: string
+          example: "1253"
         cod_item: 
           type: string
           format: string
@@ -133,9 +129,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ProductVariation"
-        
+        Marketplace:
+          $ref: "#/components/schemas/Marketplaces"
         dimension:
-          $ref: "#/components/schemas/FreightInfo"
+          $ref: "#/components/schemas/Dimension"
         shipping:  
           $ref: "#/components/schemas/Shipping"
         tags:
@@ -143,6 +140,13 @@ components:
           items:
             type: string
             example: "[mandatory_free_shipping]"
+    Ads:
+      type: array
+      description: >
+        Modelo destinado ao retorno de anuncios.
+      
+      $ref: "#/components/schemas/Ad"
+    
     ProductVariation:
       type: object
       properties:
@@ -204,7 +208,7 @@ components:
           type: string
           format: string
           example: "Clássico"    
-    FreightInfo:
+    Dimension:
       description: >
         São as informações de frete do produto, contém toda a informação necessária para um calculo de frete
       type: object
@@ -222,7 +226,102 @@ components:
           example: 16.0
         weight:
           type: number
-   
+     
+    Marketplaces:
+      description: >
+        São as informações referente aos marketplaces
+      type: array
+      items:
+        $ref: "#/components/schemas/Marketplace"
+        
+    Marketplace:
+      description: >
+        São as informações referente aos marketplaces
+      type: object
+      properties:
+        CNOVA:
+          $ref: "#/components/schemas/CNOVA"
+        Skyhub:
+          $ref: "#/components/schemas/Skyhub"
+        Amazon:
+          $ref: "#/components/schemas/Amazon"  
+    CNOVA:
+      description: >
+        São as informações obrigatorias para o marketplace CNOVA
+      type: object
+      properties:
+        title:
+          type: string
+          format: string
+          example: "Iphone 6s Plus"
+        categoryCnova:
+          type: string
+          format: string
+          example: "3213"
+        grid:
+          $ref: "#/components/schemas/gridCNOVA"
+    gridCNOVA:
+      type: object
+      properties:
+        id_sku:
+          type: integer
+          example: 1235
+        cod_sku:
+          type: string
+          example: "PROD-12451"
+    Skyhub:
+      description: >
+        São as informações obrigatorias para o marketplace Skyhub
+      type: object
+      properties:
+        categorySkyhub:
+          type: string
+          format: string
+          example: "3213"
+        grid:
+          $ref: "#/components/schemas/gridSKYHUB"
+    gridSKYHUB:
+      type: object
+      properties:
+        id_sku:
+          type: integer
+          example: 1235
+        cod_sku:
+          type: string
+          example: "PROD-12451"
+    Amazon:
+      description: >
+        São as informações obrigatorias para o marketplace Amazon
+      type: object
+      properties:
+        categoryAmazon:
+          type: string
+          format: string
+          example: "3213"
+        manufacturer:
+          type: string
+          format: string
+          example: "Fornecedor XPTO"
+        model:
+          type: string
+          format: string
+          example: "Modelo A"
+        categoryNavigation:
+          type: string
+          format: string
+          example: "Categoria de Navegacao"
+        grid:
+          $ref: "#/components/schemas/gridAmazon"
+    gridAmazon:
+      type: object
+      properties:
+        id_sku:
+          type: integer
+          example: 1235
+        cod_sku:
+          type: string
+          example: "PROD-12451" 
+        
     CustomVariation:
       description: >
         Refere-se as variacoes de um unico produto, por exemplo (cor, tamanho, etc)
