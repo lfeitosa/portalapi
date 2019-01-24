@@ -72,6 +72,12 @@ paths:
           schema:
             type: string
             example: "MLB1138005551"
+        - name: price
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 25.12
       requestBody:
         description: Envia um objeto que representa um produto com as alterações necessárias
         required: true
