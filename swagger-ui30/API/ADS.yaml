@@ -79,7 +79,7 @@ paths:
         content:
           'application/json':
             schema:
-               $ref: '#/components/schemas/updatePrice'
+               example: '{"price": "27.12"}'
                
               
       responses:
@@ -88,8 +88,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
-                example: '{"price": "27.12"}'
+                 $ref: '#/components/responses/updatePrice''
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
