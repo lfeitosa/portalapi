@@ -72,13 +72,6 @@ paths:
           schema:
             type: string
             example: "MLB1138005551"
-        - in: query
-          name: query
-          description: Pet object that needs to be added to the store
-          required: true
-          schema:
-            type: string
-            example: '{"price": "27.12"}'   
       requestBody:
         description: Envia um objeto que representa um produto com as alterações necessárias
         required: true
