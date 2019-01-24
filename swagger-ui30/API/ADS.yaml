@@ -30,15 +30,8 @@ paths:
       - Ads
       summary: Obtem uma lista de anuncios do sistema
       security:
-        - bearerAuth: []
-      parameters: 
-        - name: accountID
-          description: Refere-se a conta usada na Becommerce, a identificação da Loja
-          in: query
-          required: true
-          schema:
-            type: string
-            example: "TT620483"
+        - bearerAuth: []  
+     
         
       responses:
         '200':
