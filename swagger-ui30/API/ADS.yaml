@@ -80,7 +80,7 @@ paths:
           'application/json':
             schema:
                $ref: '#/components/schemas/updatePrice'
-               example: '{"price": "27.12"}'
+               
               
       responses:
         '200':
