@@ -21,8 +21,8 @@ servers:
 tags: 
 - name: Ads
   description: (ads) É a entidade que representa um ou mais anuncios do seller
-- name: Stock
-  description: (stock) É a entidade que representa a alteracao do estoque de um anúncio.
+- name: Price
+  description: (price) É a entidade que representa a alteracao do preço de um anúncio.
 paths:
   /items:
     get:
@@ -61,8 +61,8 @@ paths:
   /items/{itemID}:
     put:
       tags: 
-      - Stock
-      summary: Realiza a alteração do estoque 
+      - Price
+      summary: Realiza a alteração do preço 
       security:
         - bearerAuth: []
       parameters: 
