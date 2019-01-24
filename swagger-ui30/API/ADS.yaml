@@ -367,6 +367,10 @@ components:
         Refere-se alteracao do preço de um anuncio.
       type: object
       properties:
+        item:
+          type: string
+          format: string
+          example: MLB154897563
         price:
           type: number
           format: float
