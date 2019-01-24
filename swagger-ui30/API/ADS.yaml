@@ -59,7 +59,7 @@ paths:
           $ref: '#/components/responses/ServiceError'
  
   /items/{itemID}:
-    post:
+    put:
       tags: 
       - Stock
       summary: Realiza a alteração do estoque 
@@ -79,7 +79,8 @@ paths:
         content:
           'application/json':
             schema:
-              example: '{"price": "27.12"}'
+               $ref: '#/components/schemas/updatePrice'
+               example: '{"price": "27.12"}'
               
       responses:
         '200':
@@ -361,6 +362,15 @@ components:
           type: string
           format: string
           example: "Preto"
+    updatePrice:
+      description: >
+        Refere-se alteracao do preço de um anuncio.
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+          example: 23.12
     Shipping:
       description: >
         Refere-se ao envio da mercadoria e quais modelos estão habilitados.
