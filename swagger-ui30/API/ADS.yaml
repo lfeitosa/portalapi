@@ -72,20 +72,7 @@ paths:
           schema:
             type: string
             example: "MLB1138005551"
-        - in: query
-          name: coordinates
-          content:
-            application/json:
-              schema:
-                type: object
-      required:
-        - lat
-        - long
-      properties:
-        lat:
-          type: number
-        long:
-          type: number    
+      
       requestBody:
         description: Envia um objeto que representa um produto com as alterações necessárias
         required: true
