@@ -72,12 +72,6 @@ paths:
           schema:
             type: string
             example: "MLB1138005551"
-        - name: price
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 25.12
       requestBody:
         description: Envia um objeto que representa um produto com as alterações necessárias
         required: true
@@ -89,11 +83,12 @@ paths:
               
       responses:
         '200':
-          description: "Retorna uma lista de anuncios cadastrados"
+          description: "Retorna o ajuste realizado."
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ads'
+                type: string
+                example: '{"price": "27.12"}'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
