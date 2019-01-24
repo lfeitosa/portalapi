@@ -59,7 +59,7 @@ paths:
           $ref: '#/components/responses/ServiceError'
  
   /items/{itemID}:
-    put:
+    post:
       tags: 
       - Stock
       summary: Realiza a alteração do estoque 
@@ -79,7 +79,6 @@ paths:
         content:
           'application/json':
             schema:
-              type: string
               example: '{"price": "27.12"}'
               
       responses:
