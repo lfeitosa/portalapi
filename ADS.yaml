@@ -2,298 +2,96 @@ openapi: 3.0.0
 info:
   title: API Becommerce - Anuncio
   description: Api oficial da Becommerce para gestão de anuncio
-  version: "1.0.0"
-  
+  version: 1.0.0-oas3
 servers:
-
-# Added by API Auto Mocking Plugin
- 
-# Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/lfeitosa/ADS/1.0.0
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/becommerce/api-becommerce_anuncios/1.0.0
-  - url: http://api.becommerce.com.br/v1
-    description: URL da api de produção
-  - url: http://staging-api.becommerce.com.br/v1
-    description: Servidor usado para testes da API
-
-tags: 
-- name: Anuncio
-  description: (ads) É a entidade que representa um anuncio do seller
-
+- url: https://virtserver.swaggerhub.com/lfeitosa/ADS/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: Price
+  description: (price) É a entidade que representa a alteracao do preço de um anúncio.
 paths:
-  /items:
-    get:
-      tags: 
-      - Anuncios
-      summary: Obtem uma lista de anuncios do sistema
-      security:
-        - bearerAuth: []
-      parameters: 
-        - name: accountID
-          description: Refere-se a conta usada na Becommerce, a identificação da Loja
-          in: query
-          required: true
-          schema:
-            type: string
-            example: "TT620483"
-        - name: status
-          in: query
-          description: Refere-se se o anuncio solicitado esta ativo/pausado/finalizado
-          schema:
-            type: string
-            example: "active | paused | finally"
-        - name: tags
-          in: query
-          description: descrição da tag
-          schema:
-            type: string
-            example: "Associação Automatica | Automático"
-        - name: search
-          in: query
-          description: Pode ser enviado o Título, ID ou Código do SKU para buscar na lista
-          schema:
-            type: string
-            example: "pneu | honda | celular"
+  /items/{itemID}:
+    put:
+      tags:
+      - Price
+      summary: Realiza a alteração do preço
+      parameters:
+      - name: itemID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: MLB1138005551
+      requestBody:
+        description: Envia um objeto que representa um produto com as alterações necessárias
+        content:
+          application/json:
+            schema:
+              example: '{"valor": "27.12"}'
+        required: true
       responses:
-        '200':
-          description: "Retorna uma lista de anuncios cadastrados"
+        200:
+          description: Retorna o ajuste realizado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Products'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
-
-          
+                $ref: '#/components/schemas/updatePrice'
+        400:
+          description: The request contains headers, query params or body attributes empty that are required.
+          content:
+            text/plain:
+              schema:
+                type: string
+        401:
+          description: The access token is missing or invalid.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: Resource not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        422:
+          description: The request contains headers, query params or body attributes with invalid values.
+          content:
+            text/plain:
+              schema:
+                type: string
+        500:
+          description: An error ocurred in the service. Please include the trace identifier in your report.
+          content:
+            text/plain:
+              schema:
+                type: string
+      security:
+      - bearerAuth: []
 components:
   schemas:
-    Products:
-      type: object
-      description: >
-        Modelo destinado ao retorno de anuncios.
-      properties:
-        ads:
-           $ref: "#/components/schemas/Ads"
-    Ads:
+    updatePrice:
       type: object
       properties:
-        item_id: 
+        item:
           type: string
           format: string
-          example: "MLB123131231"
-        title:
-          type: string
-          example: "Wok Antiaderente Ultra Strong Indução 30cm Tampa Vidro"
-        detailedDescription:
-          type: string
-          format: string
-          example: "Wok Antiaderente Ultra Strong por indução 30cm 4,7 Litros..."
-        category_id:
-          type: string
-          format: string
-          example: "MLB1341"
-        EAN:
-          type: string
-          format: string
-          example: "9900000023928"
-        brand:
-          type: string 
-          format: string
-          example: ROCHELI
-        available_quantity:
-          type: integer
-          example: 10
-        sold_quantity:
-          type: integer
-          example: 3
-        pictures:
-          type: array
-          items:
-            $ref: "#/components/schemas/Pictures"
-        prices:
-          $ref: "#/components/schemas/Prices"
-        youtubeLink:
-          type: string
-          example: "null"
-        type:
-          $ref: "#/components/schemas/Types"
-        variations:
-          type: array
-          items:
-            $ref: "#/components/schemas/ProductVariation"
-        
-        dimension:
-          $ref: "#/components/schemas/FreightInfo"
-        shipping:  
-          $ref: "#/components/schemas/Shipping"
-        tags:
-          type: array
-          items:
-            type: string
-            example: "[mandatory_free_shipping]"
-    ProductVariation:
-      type: object
-      properties:
-        id_sku:
-          type: integer
-          example: 134
-        EAN:
-          type: string
-          example: "9900000023928"
-        condition: 
-          type: string
-          example: "new"
+          example: MLB154897563
         price:
-          type: string
-          example: 1412.32
-        stock:
-          type: integer
-          example: 3
-        custom_variation:
-          type: array
-          items:
-            $ref: "#/components/schemas/CustomVariation"
-    
-    Pictures:
-      description: >
-        Refere-se as imagens disponibilizadas para o anuncio.
-      type: object
-      properties:
-        id_picture:
-          type: integer
-        url:
-          type: string
-          example:  "http://mlb-s1-p.mlstatic.com/903494-MLB29071741031_122018-O.jpg"
-       
-    Prices:
-      description: >
-        Refere-se aos precos do produto destinado ao anúncio.
-      type: object
-      properties:
-        id_price:
-          type: integer
-        priceValue:
+          type: number
+          format: float
+          example: 23.12
+        statusRetorno:
           type: string
           format: string
-          example: 123.23
-    Types:
-      description: >
-        Refere-se aos tipos de anúncio.
-      type: object
-      properties:
-        id:
-          type: string
-          example: "gold_special"
-                        
-        name:
-          type: string
-          format: string
-          example: "Clássico"    
-    FreightInfo:
-      description: >
-        São as informações de frete do produto, contém toda a informação necessária para um calculo de frete
-      type: object
-      properties:
-        id:
-          type: integer
-        height:
-          type: string
-          example: cm 2.0
-        width:
-          type: string
-          example: cm 2.0
-        depth:
-          type: string
-          example: cm 16.0
-        weight:
-          type: string
-   
-    CustomVariation:
-      description: >
-        Refere-se as variacoes de um unico produto, por exemplo (cor, tamanho, etc)
-      type: object
-      properties:
-        id:
-          type: string
-          format: string
-          example: "COLOR"
-        name:
-          type: string
-          example: "Cor"
-        valueId:
-          type: string
-          example: "52049"
-        valueName:
-          type: string
-          format: string
-          example: "Preto"
-    Shipping:
-      description: >
-        Refere-se ao envio da mercadoria e quais modelos estão habilitados.
-      type: object
-      properties:
-        mode:
-          type: string
-          format: string
-          example: "me2"
-        localPickup:
-          type: boolean
-          example: true
-        freeshipping:
-          type: boolean
-          example: true
-        logisticType:
-          type: string
-          format: string
-          example: "Cross_docking"      
-        ShippingFreeRules:
-          type: array
-          items:
-            $ref: "#/components/schemas/ShippingFreeRules"
-    ShippingFreeRules:
-      description: >
-        Refere-se as regras para envio gratuito da mercadoria.
-      type: object
-      properties:
-        id:
-          type: string
-          format: string
-          example: "73328"
-        rule:
-          type: object
-          properties:
-          
-            freemode:
-              type: string
-              format: string
-              example: "country"
-            value:
-              type: string
-              format: string
-              example: "null"
-      
-     
-          
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+          example: Sucesso
+      description: |
+        Refere-se alteracao do preço de um anuncio.
   responses:
     BadRequest:
-      description: >-
-        The request contains headers, query params or body attributes empty that
-        are required.
+      description: The request contains headers, query params or body attributes empty that are required.
       content:
         text/plain:
           schema:
@@ -323,17 +121,13 @@ components:
           schema:
             type: string
     UnprocessableRequest:
-      description: >-
-        The request contains headers, query params or body attributes with
-        invalid values.
+      description: The request contains headers, query params or body attributes with invalid values.
       content:
         text/plain:
           schema:
             type: string
     ServiceError:
-      description: >-
-        An error ocurred in the service. Please include the trace identifier in
-        your report.
+      description: An error ocurred in the service. Please include the trace identifier in your report.
       content:
         text/plain:
           schema:
@@ -345,15 +139,20 @@ components:
           schema:
             type: string
     BadGateway:
-      description: >-
-        An error ocurred in one of the upstreams services, the body contains the
-        description.
+      description: An error ocurred in one of the upstreams services, the body contains the description.
+      headers:
+        X-Upstream-Code:
+          description: Error code from the upstream services.
+          style: simple
+          explode: false
+          schema:
+            type: string
       content:
         text/plain:
           schema:
             type: string
-      headers:
-        X-Upstream-Code:
-          description: Error code from the upstream services.
-          schema:
-            type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
