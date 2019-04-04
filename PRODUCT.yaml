@@ -4,7 +4,8 @@ info:
   description: Api oficial da Becommerce para gestão de produtos
   version: 1.0.1
 servers:
-- url: https://virtserver.swaggerhub.com/lfeitosa/Teste/1.0.0
+- url: https://virtserver.swaggerhub.com/lfeitosa/Teste/1.0.1
+       
   description: SwaggerHub API Auto Mocking
 - url: http://api.becommerce.com.br/v1
   description: URL da api de produção
@@ -74,20 +75,20 @@ paths:
       tags:
       - Estoque
       summary: Realiza uma alteração no estoque em uma entidade ja existente
+      
       requestBody:
-        description: Envia um estoque e o comando que representa a acao a ser realizada com o estoque do produto.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdStockRequest'
-        required: true
+       content:
+         application/json:
+          schema:
+           $ref: '#/components/schemas/UpdStockRequest'
+        
       responses:
         200:
           description: Retorno confirmando que o objeto foi alterado com sucesso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdStockResponse'
+                $ref: "#/components/schemas/UpdStockResponse"
         400:
           description: The request contains headers, query params or body attributes empty that are required.
           content:
@@ -186,13 +187,13 @@ components:
           example: 10
         codSKU:
           type: string
-          example: MLB975556002
+          example: "MLB975556002"
         observacao:
           type: string
-          example: Ajuste de estoque para Becommerce
+          example: "Ajuste de estoque para Becommerce"
         comando:
           type: string
-          example: ajuste
+          example: "ajuste"
       description: Atualizacao de estoque dentro da Becommerce (meli).
     UpdStockResponse:
       type: object
