@@ -91,7 +91,7 @@ paths:
             type: string
             maxLength: 120
             format: string
-            example: "Basic%20NpoWoylOXJFs5IsrJeQDSAFasdaFASAFfas"
+            example: "Basic 20NpoWoylOXJFs5IsrJeQDSAFasdaFASAFfas"
           required: true
        
       requestBody:
