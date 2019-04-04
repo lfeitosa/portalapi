@@ -32,6 +32,13 @@ paths:
         schema:
           type: string
           example: TT620483
+      - in: header
+        name: Authorization⠀
+        schema:
+          type: string
+          format: string
+          example: "Basic 20NpoWoylOXJFs5IsrJeQDSAFasdaFASAFfas"
+        required: true    
       responses:
         200:
           description: Retorna uma lista de produtos cadastrados
@@ -75,7 +82,18 @@ paths:
       tags:
       - Estoque
       summary: Realiza uma alteração no estoque em uma entidade ja existente
-      
+      security:
+      - bearerAuth: []
+      parameters: 
+        - in: header
+          name: Authorization⠀
+          schema:
+            type: string
+            maxLength: 120
+            format: string
+            example: "Basic%20NpoWoylOXJFs5IsrJeQDSAFasdaFASAFfas"
+          required: true
+       
       requestBody:
        content:
          application/json:
@@ -119,8 +137,7 @@ paths:
             text/plain:
               schema:
                 type: string
-      security:
-      - bearerAuth: []
+      
   /products/{productID}:
     get:
       tags:
@@ -136,6 +153,22 @@ paths:
         schema:
           type: string
           example: MLB1138005551
+      - name: accountID
+        in: header
+        description: Refere-se a conta usada na Becommerce, a identificação da Loja
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: TT620483
+      - in: header
+        name: Authorization⠀
+        schema:
+          type: string
+          format: string
+          example: "Basic 20NpoWoylOXJFs5IsrJeQDSAFasdaFASAFfas"
+        required: true    
       responses:
         200:
           description: Retorna o produto solicitado
@@ -176,6 +209,10 @@ paths:
       security:
       - bearerAuth: []
 components:
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
   schemas:
     Products:
       $ref: '#/components/schemas/Product'
@@ -515,8 +552,4 @@ components:
         text/plain:
           schema:
             type: string
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+  
