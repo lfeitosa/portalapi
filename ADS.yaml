@@ -24,6 +24,13 @@ paths:
         schema:
           type: string
           example: MLB1138005551
+      - in: header
+        name: Authorization⠀
+        schema:
+          type: string
+          format: string
+          example: "Basic 20NpoWoylOXJFs5IsrJeQDSAFasdaFASAFfas"
+        required: true    
       requestBody:
         description: Envia um objeto que representa um produto com as alterações necessárias
         content:
