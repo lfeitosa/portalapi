@@ -2,363 +2,387 @@ openapi: 3.0.0
 info:
   title: API Becommerce - Produtos
   description: Api oficial da Becommerce para gestão de produtos
-  version: "1.0.0"
-  
+  version: 1.0.1
 servers:
-# Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/becommerce/api-becommerce_produtos/1.0.0
-  - url: http://api.becommerce.com.br/v1
-    description: URL da api de produção
-  - url: http://staging-api.becommerce.com.br/v1
-    description: Servidor usado para testes da API
-
-  
-tags: 
+- url: https://virtserver.swaggerhub.com/becommerce/api-becommerce_produtos/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://api.becommerce.com.br/v1
+  description: URL da api de produção
+- url: http://staging-api.becommerce.com.br/v1
+  description: Servidor usado para testes da API
+tags:
 - name: Produtos
   description: (products) É a entidade que representa um produto do seller
-
+- name: Estoque
+  description: (stock) É o ajuste da quantidade do produto disponibilizado em anuncio Meli.
 paths:
   /products:
     get:
-      tags: 
+      tags:
       - Produtos
       summary: Obtem uma lista de produtos do sistema
-      security:
-        - bearerAuth: []
-      parameters: 
-        - name: accountID
-          description: Refere-se a conta usada na Becommerce, a identificação da Loja
-          in: query
-          required: true
-          schema:
-            type: string
-            example: "TT620483"
-        - name: status
-          in: query
-          description: Refere-se se o produto pedido esta ativo ou inativo
-          schema:
-            type: string
-            example: "active | inactive | all"
-        - name: tags
-          in: query
-          description: descrição da tag
-          schema:
-            type: string
-            example: "Associação Automatica | Automático"
-        - name: search
-          in: query
-          description: Pode ser enviado o Título, ID ou Código do SKU para buscar na lista
-          schema:
-            type: string
-            example: "pneu | honda | celular"
+      parameters:
+      - name: accountID
+        in: header
+        description: Refere-se a conta usada na Becommerce, a identificação da Loja
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: TT620483
       responses:
-        '200':
-          description: "Retorna uma lista de produtos cadastrados"
+        200:
+          description: Retorna uma lista de produtos cadastrados
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Products'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
-    post:
-      tags: 
-      - Produtos
-      summary: Envia um objeto de um produto para ser gravado na base de dados
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: Envia um objeto que representa um produto
-        required: true
-        content:
-          'application/json':
-            schema:
-              $ref: "#/components/schemas/Product"
-      responses:
-        '201':
-          description: Retorno confirmando que o objeto foi criado com sucesso
+        400:
+          description: The request contains headers, query params or body attributes empty that are required.
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: "#/components/schemas/Product"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
-      
-  /products/{productID}:
-    get:
-      tags: 
-      - Produtos
-      summary: Pega o registro de um produto de acordo com o productID passado
-      security:
-        - bearerAuth: []
-      parameters: 
-        - name: productID
-          description: É o identificador unico do produto (MELIID)
-          in: path
-          required: true
-          schema:
-            type: string
-            example: "MLB1138005551"
-      responses:
-        '200':
-          description: "Retorna o produto solicitado"
+                type: string
+        401:
+          description: The access token is missing or invalid.
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: '#/components/schemas/Product'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
+                type: string
+        404:
+          description: Resource not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        422:
+          description: The request contains headers, query params or body attributes with invalid values.
+          content:
+            text/plain:
+              schema:
+                type: string
+        500:
+          description: An error ocurred in the service. Please include the trace identifier in your report.
+          content:
+            text/plain:
+              schema:
+                type: string
+      security:
+      - bearerAuth: []
     put:
-      tags: 
-      - Produtos
-      summary: Realiza uma alteração em uma entidade ja existente
-      security:
-        - bearerAuth: []
-      parameters: 
-        - name: productID
-          in: path
-          required: true
-          schema:
-            type: string
-            example: "MLB1138005551"
+      tags:
+      - Estoque
+      summary: Realiza uma alteração no estoque em uma entidade ja existente
       requestBody:
-        description: Envia um objeto que representa um produto com as alterações necessárias
-        required: true
+        description: Envia um estoque e o comando que representa a acao a ser realizada com o estoque do produto.
         content:
-          'application/json':
+          application/json:
             schema:
-              $ref: "#/components/schemas/Products"
+              $ref: '#/components/schemas/UpdStockRequest'
+        required: true
       responses:
-        '200':
+        200:
           description: Retorno confirmando que o objeto foi alterado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Products"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
-    delete:
-      tags: 
-      - Produtos
-      summary: Remove um produto do sistema
+                $ref: '#/components/schemas/UpdStockResponse'
+        400:
+          description: The request contains headers, query params or body attributes empty that are required.
+          content:
+            text/plain:
+              schema:
+                type: string
+        401:
+          description: The access token is missing or invalid.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: Resource not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        422:
+          description: The request contains headers, query params or body attributes with invalid values.
+          content:
+            text/plain:
+              schema:
+                type: string
+        500:
+          description: An error ocurred in the service. Please include the trace identifier in your report.
+          content:
+            text/plain:
+              schema:
+                type: string
       security:
-        - bearerAuth: []
-      parameters: 
+      - bearerAuth: []
+  /products/{productID}:
+    get:
+      tags:
+      - Produtos
+      summary: Pega o registro de um produto de acordo com o productID passado
+      parameters:
       - name: productID
-        description: Identificação unica do produto
         in: path
+        description: É o identificador unico do produto (MELIID)
         required: true
+        style: simple
+        explode: false
         schema:
           type: string
-          example: "MLB1138005551"
+          example: MLB1138005551
       responses:
-        '204':
-          description: Produto removido com sucesso
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/UnathorizedRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableRequest'
-        '500':
-          $ref: '#/components/responses/ServiceError'
- 
-          
+        200:
+          description: Retorna o produto solicitado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: The request contains headers, query params or body attributes empty that are required.
+          content:
+            text/plain:
+              schema:
+                type: string
+        401:
+          description: The access token is missing or invalid.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: Resource not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        422:
+          description: The request contains headers, query params or body attributes with invalid values.
+          content:
+            text/plain:
+              schema:
+                type: string
+        500:
+          description: An error ocurred in the service. Please include the trace identifier in your report.
+          content:
+            text/plain:
+              schema:
+                type: string
+      security:
+      - bearerAuth: []
 components:
   schemas:
     Products:
+      $ref: '#/components/schemas/Product'
+    UpdStockRequest:
       type: object
-      description: >
-        Modelo destinado ao retorno de produtos.
       properties:
-        products:
-           $ref: "#/components/schemas/Product"
-        
+        qtd:
+          type: number
+          example: 10
+        codSKU:
+          type: string
+          example: MLB975556002
+        observacao:
+          type: string
+          example: Ajuste de estoque para Becommerce
+        comando:
+          type: string
+          example: ajuste
+      description: Atualizacao de estoque dentro da Becommerce (meli).
+    UpdStockResponse:
+      type: object
+      properties:
+        qtd:
+          type: number
+          example: 10
+        codSKU:
+          type: string
+          example: MLB975556002
+        observacao:
+          type: string
+          example: Ajuste de estoque para Becommerce
+        comando:
+          type: string
+          example: ajuste
+        statusRetorno:
+          type: string
+          example: Sucesso
+      description: Retorno da atualizacao de estoque dentro da Becommerce (meli).
     Product:
       type: object
       properties:
-        id: 
+        id:
           type: integer
           format: int64
+          example: 21
         sku:
           type: string
+          example: PROD-1234
         title:
           type: string
+          example: Iphone 6s Plus
         tags:
           type: string
+          example: free_shipping
         sellPrice:
-          type: string
+          type: number
+          example: 42.32
         costPrice:
-          type: string
+          type: number
+          example: 20
         checkoutRequest:
           type: string
+          example: Qual frete?
         sendTypeProduct:
           type: string
+          example: Digital
         expeditionDetails:
           type: string
         hasVariation:
           type: boolean
+          example: false
         fiscalGroup:
           type: string
+          example: "01"
         comercialUnit:
           type: string
+          example: UN
         cfop:
-          $ref: "#/components/schemas/CFOP"
+          $ref: '#/components/schemas/CFOP'
         ncm:
-          $ref: "#/components/schemas/NCM"
+          $ref: '#/components/schemas/NCM'
         productOrigin:
           type: string
+          example: 0 - Nacional - Exceto as indicadas nos códigos 3 a 5
           enum:
-          - "0 - Nacional - Exceto as indicadas nos códigos 3 a 5"
-          - "1 - Estrangeira - Importação direta, exceto a indicada no cógio 6"
-          example: "0 - Nacional - Exceto as indicadas nos códigos 3 a 5"
+          - 0 - Nacional - Exceto as indicadas nos códigos 3 a 5
+          - 1 - Estrangeira - Importação direta, exceto a indicada no cógio 6
         ads:
           type: array
-          items: 
+          items:
             type: string
-            example: ["MLB2313123", "MLB23123123"]
+            example: '["MLB2313123","MLB23123123"]'
         variations:
           type: array
           items:
-            $ref: "#/components/schemas/ProductVariation"
+            $ref: '#/components/schemas/ProductVariation'
         inventoryRule:
           type: string
           example: Padrão
         photos:
           type: array
           items:
-            $ref: "#/components/schemas/Photo"
+            $ref: '#/components/schemas/Photo'
         freightInfo:
-          $ref: "#/components/schemas/FreightInfo"
-        stocks:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Stocks"
+          $ref: '#/components/schemas/FreightInfo'
         inventories:
-          type: "array"
+          type: array
           items:
-            $ref: "#/components/schemas/Inventories"  
-          
+            $ref: '#/components/schemas/Inventories'
     ProductVariation:
       type: object
       properties:
+        cod_sku:
+          type: string
+          format: string
+          example: PROD-1234
         id_sku:
           type: integer
+          example: 32
         grid:
-          type: "array"
+          type: array
           items:
-            $ref: "#/components/schemas/DataVariation"
-        
+            $ref: '#/components/schemas/DataVariation'
     DataVariation:
       type: object
       properties:
+        id_variation:
+          type: string
+          format: string
+          example: MLA21313
         nameVariation:
           type: string
           format: string
-          example: "Cor"
+          example: Cor
         valueVariation:
           type: string
           format: string
-          example: "preto"
-        situationVariation: 
+          example: preto
+        situationVariation:
           type: string
           format: string
-          example: "active"
+          example: active
+        stock:
+          type: integer
+          format: integer
+          example: 12
     Photo:
-      description: >
-        É a foto do produto, ela pode ser colocada como principal ou não
       type: object
       properties:
         id:
           type: integer
+          example: 32
         url:
           type: string
+          example: www.google.com.br/img.png
         isMainPhoto:
           type: boolean
           default: false
+      description: |
+        É a foto do produto, ela pode ser colocada como principal ou não
     CFOP:
-      description: >
-        Código Fiscal de Operações e Prestações, das entradas e saídas de mercadorias, intermunicipal e interestadual. Trata-se de um código numérico que identifica a natureza de circulação da mercadoria ou a prestação de serviço de transportes.
       type: object
       properties:
         id:
           type: integer
         code:
           type: string
-          example: 5350
+          example: "5350"
         description:
           type: string
           example: PRESTAÇÕES DE SERVIÇOS DE TRANSPORTE
+      description: |
+        Código Fiscal de Operações e Prestações, das entradas e saídas de mercadorias, intermunicipal e interestadual. Trata-se de um código numérico que identifica a natureza de circulação da mercadoria ou a prestação de serviço de transportes.
     NCM:
-      description: >
-        NCM significa "Nomenclatura Comum do Mercosul" e trata-se de um código de oito dígitos estabelecido pelo Governo Brasileiro para identificar a natureza das mercadorias e promover o desenvolvimento do comércio internacional, além de facilitar a coleta e análise das estatísticas do comércio exterior.
       type: object
       properties:
         id:
           type: integer
         code:
           type: string
-          example: 123052990
+          example: "123052990"
         description:
           type: string
           example: Outros serviços de assistência social
+      description: |
+        NCM significa "Nomenclatura Comum do Mercosul" e trata-se de um código de oito dígitos estabelecido pelo Governo Brasileiro para identificar a natureza das mercadorias e promover o desenvolvimento do comércio internacional, além de facilitar a coleta e análise das estatísticas do comércio exterior.
     FreightInfo:
-      description: >
-        São as informações de frete do produto, contém toda a informação necessária para um calculo de frete
       type: object
       properties:
         id:
           type: integer
+          example: 32
         height:
-          type: string
-          example: cm 2.0
+          type: number
+          example: 2
         width:
-          type: string
-          example: cm 2.0
+          type: number
+          example: 2
         depth:
-          type: string
-          example: cm 16.0
+          type: number
+          example: 16
         weight:
           type: string
           example: peso da carga
         timeHandling:
           type: string
-          example: 2 
           description: Número em dias que será adicionado ao prazo calculado do frete.
+          example: "2"
         ownDelivery:
           type: boolean
           description: Define se este item possui a opção de entrega propria.
@@ -368,16 +392,17 @@ components:
         freightMode:
           type: string
           enum:
-            - "Correios"
-            - "Tabela Personalizada"
-            - "Mercado Envios"
+          - Correios
+          - Tabela Personalizada
+          - Mercado Envios
         freightTableID:
           type: integer
           description: Tabela personalizada por grupo de estados, para gerenciar as tabelas da conta, acesse 'Tabelas de Frete > Gerenciamento
+          example: 14
         additionalUnity:
-          type: string
-          description:
-            Define a regra de calculo de frete para mais de uma unidade deste mesmo produto.
+          type: number
+          description: Define a regra de calculo de frete para mais de uma unidade deste mesmo produto.
+          example: 0
         freeNormal:
           type: boolean
         freeExpress:
@@ -385,43 +410,30 @@ components:
         expressAdditionalValue:
           type: number
         expressAdditionalPercent:
-          type: string
+          type: number
+          example: 23
         normalAdditionalValue:
           type: number
         normalAdditionalPercent:
-          type: string
-    Stocks: 
-      description: >
-        Metodo destinado para mostrar os itens que estao dentro do inventario.
-      type: object
-      required:
-        - id_sku
-        - quantity
-      properties:
-        id_sku:
-          type: string
-          format: string
-          example: 'SKU-12374'
-        quantity:
-          type: integer
-          example: 12
+          type: number
+          example: 34.32
+      description: |
+        São as informações de frete do produto, contém toda a informação necessária para um calculo de frete
     Inventories:
-      type: object
-      description: >
-        Metodo destinado para consulta de inventarios da Bec.
       required:
-        - id
-        - blockMovement
-        - situationInvetorie  
+      - blockMovement
+      - id
+      - situationInvetorie
+      type: object
       properties:
         id:
           type: string
           format: uuid
-          example: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-        externalLocator:  
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        externalLocator:
           type: string
           format: string
-          example: 'INV-12374'
+          example: INV-12374
         blockMovement:
           type: boolean
           format: boolean
@@ -429,27 +441,20 @@ components:
         situationInvetorie:
           type: string
           format: String
+          example: Aberto
           enum:
-          - 'Aberto'
-          - 'Processado'
-          - 'Cancelado'
-          example: 'Aberto'
+          - Aberto
+          - Processado
+          - Cancelado
         note:
           type: string
           format: String
-          example: 'Inventario para organizacao da operacao' 
-
-          
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+          example: Inventario para organizacao da operacao
+      description: |
+        Metodo destinado para consulta de inventarios da Bec.
   responses:
     BadRequest:
-      description: >-
-        The request contains headers, query params or body attributes empty that
-        are required.
+      description: The request contains headers, query params or body attributes empty that are required.
       content:
         text/plain:
           schema:
@@ -479,17 +484,13 @@ components:
           schema:
             type: string
     UnprocessableRequest:
-      description: >-
-        The request contains headers, query params or body attributes with
-        invalid values.
+      description: The request contains headers, query params or body attributes with invalid values.
       content:
         text/plain:
           schema:
             type: string
     ServiceError:
-      description: >-
-        An error ocurred in the service. Please include the trace identifier in
-        your report.
+      description: An error ocurred in the service. Please include the trace identifier in your report.
       content:
         text/plain:
           schema:
@@ -501,15 +502,20 @@ components:
           schema:
             type: string
     BadGateway:
-      description: >-
-        An error ocurred in one of the upstreams services, the body contains the
-        description.
+      description: An error ocurred in one of the upstreams services, the body contains the description.
+      headers:
+        X-Upstream-Code:
+          description: Error code from the upstream services.
+          style: simple
+          explode: false
+          schema:
+            type: string
       content:
         text/plain:
           schema:
             type: string
-      headers:
-        X-Upstream-Code:
-          description: Error code from the upstream services.
-          schema:
-            type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
