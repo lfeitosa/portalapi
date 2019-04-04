@@ -3,6 +3,7 @@ info:
   title: API Becommerce - Produtos
   description: Api oficial da Becommerce para gestão de produtos
   version: 1.0.1
+  
 servers:
 - url: https://virtserver.swaggerhub.com/lfeitosa/Teste/1.0.1
        
@@ -16,6 +17,7 @@ tags:
   description: (products) É a entidade que representa um produto do seller
 - name: Estoque
   description: (stock) É o ajuste da quantidade do produto disponibilizado em anuncio Meli.
+  
 paths:
   /products:
     get:
@@ -32,13 +34,6 @@ paths:
         schema:
           type: string
           example: TT620483
-      - in: header
-        name: Authorization⠀
-        schema:
-          type: string
-          format: string
-          example: "Basic 20NpoWoylOXJFs5IsrJeQDSAFasdaFASAFfas"
-        required: true    
       responses:
         200:
           description: Retorna uma lista de produtos cadastrados
@@ -81,19 +76,17 @@ paths:
     put:
       tags:
       - Estoque
-      summary: Realiza uma alteração no estoque em uma entidade ja existente
-      security:
-      - bearerAuth: []
-      parameters: 
-        - in: header
-          name: Authorization⠀
-          schema:
-            type: string
-            maxLength: 120
-            format: string
-            example: "Basic 20NpoWoylOXJFs5IsrJeQDSAFasdaFASAFfas"
-          required: true
-       
+      summary: Realiza uma alteração no estoque em uma 
+      parameters:
+      - name: accountID
+        in: header
+        description: Refere-se a conta usada na Becommerce, a identificação da Loja
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: TT620483
       requestBody:
        content:
          application/json:
@@ -162,13 +155,7 @@ paths:
         schema:
           type: string
           example: TT620483
-      - in: header
-        name: Authorization⠀
-        schema:
-          type: string
-          format: string
-          example: "Basic 20NpoWoylOXJFs5IsrJeQDSAFasdaFASAFfas"
-        required: true    
+  
       responses:
         200:
           description: Retorna o produto solicitado
