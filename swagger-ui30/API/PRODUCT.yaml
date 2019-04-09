@@ -5,13 +5,12 @@ info:
   version: 1.0.1
   
 servers:
-- url: https://virtserver.swaggerhub.com/lfeitosa/Teste/1.0.1
-       
+- url: https://virtserver.swaggerhub.com/lfeitosa/Teste/1.0.1      
   description: SwaggerHub API Auto Mocking
-- url: http://api.becommerce.com.br/v1
-  description: URL da api de produção
-- url: http://staging-api.becommerce.com.br/v1
+- url: http://k8s.becommerce.com.br/api-externa-produto/1.0.0
   description: Servidor usado para testes da API
+- url: http://api.becommerce.com.br/produto/v1
+  description: URL da api de produção
 tags:
 - name: Produtos
   description: (products) É a entidade que representa um produto do seller

@@ -6,6 +6,10 @@ info:
 servers:
 - url: https://virtserver.swaggerhub.com/lfeitosa/ADS/1.0.0
   description: SwaggerHub API Auto Mocking
+- url: http://k8s.becommerce.com.br/api-externa-anuncio/1.0.0
+  description: Servidor usado para testes da API
+- url: http://api.becommerce.com.br/anuncio/v1
+  description: URL da api de produção
 tags:
 - name: Price
   description: (price) É a entidade que representa a alteracao do preço de um anúncio.
